@@ -8,8 +8,8 @@ import React from 'react';
 
 
 const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
-  
-  
+
+
 
   return (
     <Box>
@@ -18,16 +18,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote
-                  key={index}
-                  id={note.id}
-                  title={note.title}
-                  description={note.description}
-                  date={note.date}
-                  happiness={note.happiness}
-                  satisfaction={note.satisfaction}
-                  health={note.health}
-                />
+                <EachNote key={index} {...note} />
               )
             )
           }
@@ -38,16 +29,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote
-                  key={index}
-                  id={note.id}
-                  title={note.title}
-                  description={note.description}
-                  date={note.date}
-                  happiness={note.happiness}
-                  satisfaction={note.satisfaction}
-                  health={note.health}
-                />
+                <EachNote key={index} {...note} />
               )
             )
           }

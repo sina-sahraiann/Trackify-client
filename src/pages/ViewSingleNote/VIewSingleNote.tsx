@@ -15,7 +15,7 @@ const VIewSingleNote = () => {
     return (
         <MainLayout>
             <Box className='text-left'>
-                <h3>{note?.date}<h3>
+                {note?.title}
             </Box>
         </MainLayout>
     )

@@ -56,4 +56,6 @@ const EachNoteCard = ({ id, title, description, date, happiness, health, satisfa
     );
 }
 
+
+
 export default EachNoteCard

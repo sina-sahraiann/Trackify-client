@@ -25,7 +25,6 @@ const LoginPage = () => {
     password: string
     Email: string
     check: boolean
-
   }
 
   const form = useForm<formValues>()
@@ -58,7 +57,7 @@ const LoginPage = () => {
               <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.username?.message}</span>
               <TextField id='password' type={'password'} label="password" variant="outlined" className='mt-1 bg-slate-200 border-0'
                 {...register("password", {
-                  required: "password shouldn't be empty"
+                  required: "password shouldn't be empty",
                 })}
               />
               <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.password?.message}</span>

@@ -37,4 +37,5 @@ const EachNote = ({ title, description, date, happiness, health, satisfaction
   </>
 )
 
+
 export default EachNote

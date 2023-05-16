@@ -12,6 +12,9 @@ import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import InsertEmoticonRoundedIcon from '@mui/icons-material/InsertEmoticonRounded';
 import ThumbUpOffAltRoundedIcon from '@mui/icons-material/ThumbUpOffAltRounded';
 import register from '../../api/register'
+import { useForm } from 'react-hook-form'
+import { error } from 'console'
+import { DevTool } from '@hookform/devtools'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,26 +29,68 @@ const style = {
 };
 
 const HomePage = () => {
+
   const [open, setOpen] = useState(false);
+
   const [isCard, setIsCard] = useState<boolean>(false)
-  const [formState, setFormState] = useState({
+
+  const [formstate, setFormState] = useState({
     Title: '',
-    description: ''
+    description: '',
+    happiness: 0,
+    health: 0,
+    Satisfactioon: 0,
   })
-  const handleOpen = () => setOpen(true);
+
+  type formValues = {
+    title: string
+    description: string
+    happiness: number
+    satisfactuion: number
+    health: number
+  }
+
+  const form = useForm<formValues>()
+  const { register, control, handleSubmit, formState } = form
+  const { errors } = formState
+
+  const handleOpen = () => setOpen(true)
+
   const handleClose = () => setOpen(false);
 
-  const onChangeTitle = (e: any) => {
+  const onChangeTitle: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = (e) => {
     setFormState(
-      { ...formState, Title: e.target.value }
+      { ...formstate, Title: e.target.value }
+    )
+  }
+
+  const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = (e) => {
+    setFormState(
+      { ...formstate, description: e.target.value }
+    )
+  }
+
+  const onHappinessChange = (value: number): void => {
+    setFormState(
+      { ...formstate, happiness: value }
+    )
+  }
+
+  const onHealthChange = (value: number): void => {
+    setFormState(
+      { ...formstate, health: value }
+    )
+  }
+
+  const onSatisfactionChange = (value: number): void => {
+    setFormState(
+      { ...formstate, Satisfactioon: value }
     )
   }
 
   const getChecked = (check: boolean) => {
     setIsCard(check)
   }
-
-  register()
 
   return (
     <>
@@ -75,14 +120,14 @@ const HomePage = () => {
           <form>
             <div className="flex flex-col gap-8">
               <TextField id="outlined-basic" label="Title" variant="outlined" className='my-4 bg-slate-200 border-0' onChange={onChangeTitle} />
-              <TextField multiline={true} id="outlined-basic" minRows={'5'} type={'text'} label="Description" variant="outlined" className='my-4 bg-slate-200 border-0' />
-              <StateSlider title='happiness'>
+              <TextField multiline={true} id="outlined-basic" minRows={'5'} type={'text'} label="Description" variant="outlined" onChange={onChangeDescription} className='my-4 bg-slate-200 border-0' />
+              <StateSlider title='happiness' onValueChange={onHappinessChange}>
                 <InsertEmoticonRoundedIcon />
               </StateSlider>
-              <StateSlider title='Health'>
-                <HealthAndSafetyIcon/>
+              <StateSlider title='Health' onValueChange={onHealthChange}>
+                <HealthAndSafetyIcon />
               </StateSlider>
-              <StateSlider title='Satisfactioon'>
+              <StateSlider title='Satisfactioon' onValueChange={onSatisfactionChange}>
                 <ThumbUpOffAltRoundedIcon />
               </StateSlider>
               <Button variant='contained' color='success'>Create note</Button>
@@ -90,6 +135,7 @@ const HomePage = () => {
           </form>
         </Box>
       </Modal>
+      <DevTool control={control}/>
     </>
   )
 }

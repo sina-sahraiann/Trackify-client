@@ -2,15 +2,8 @@ import axios from "axios";
 import { log } from "console";
 
 const register = () => {
-  const config = {
-    headers :{
-        "Content-Type": "application/json",
-    }
-    
-  };
 
-  axios
-    .post(
+  axios.post(
       "https://8cc0-5-213-138-142.eu.ngrok.io/account/register",
       {
         fristName: "sina",

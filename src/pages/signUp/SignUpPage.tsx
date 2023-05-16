@@ -95,7 +95,7 @@ const SignUp = () => {
             </div>
           </form>
           <Typography variant='subtitle2' sx={{ marginTop: '1rem' }} className=''>
-            Don't have an account? <Link className='text-blue-600' to={'/SignUp'}>Create one</Link>
+            Already have an account? <Link className='text-blue-600' to={'/login'}>Log in</Link>
           </Typography>
         </div>
 

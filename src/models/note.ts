@@ -1,6 +1,6 @@
 export default interface noteModel {
   id: string;
-  title: string;
+  title?: string;
   description: string;
   date: string;
   satisfaction?: number;

@@ -1,5 +1,3 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router';
 import LoginPage from './pages/login/LoginPage';
@@ -17,6 +15,7 @@ function App() {
         <Route path='SignUp' element={<SignUpPage />} />
         <Route path='profile' element={<ProfilePage />} />
         <Route path=':id' element={<VIewSingleNote />} />
+        {/* <Route path='modal' element={<ModalComp />} /> */}
       </Routes>
     </div>
   );
