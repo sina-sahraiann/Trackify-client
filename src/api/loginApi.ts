@@ -1,18 +1,12 @@
 import axios from "axios";
 
-const register = () => {
-//   const config = {
-//     headers :{
-//         "Content-Type": "application/json",
-//     }
-    
-//   };
-
+const loginApi = () => {
+  
   axios
     .post(
-      "https://8cc0-5-213-138-142.eu.ngrok.io/account/login",
+      "http://62.106.95.121/api/account/login",
       {
-        password: "aka2bruh",
+        password: "aliali123",
         email: "sinasahraian780@gmail.com",
       }
     )
@@ -20,4 +14,4 @@ const register = () => {
     .catch((err) => console.log(err));
 };
 
-export default register;
+export default loginApi;

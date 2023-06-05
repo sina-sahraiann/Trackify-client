@@ -12,7 +12,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} />
+                                <EachNoteCard {...note} key={`eachnotecard${index}`}/>
                             )
                         )
                     }
@@ -23,7 +23,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} />
+                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
                             )
                         )
                     }

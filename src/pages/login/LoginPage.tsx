@@ -1,68 +1,59 @@
 import { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { Button, Checkbox, CircularProgress, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import FormLayout from '../../components/layout/formLayout/FormLayout';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools';
+import useLoginApi from '../../hooks/useLoginApi';
+import loginApiModel from '../../models/apiModel/loginApiModel';
+
 
 
 const LoginPage = () => {
 
-  useEffect(() => {
-    axios.post('http://trackify-api.bavand.top/api/Account/login', {
-      email: "x@gmail.com",
-      password: 'aliali123',
-    }).then(res => { console.log(res.data.token) })
-      .catch(err => { console.log(err) })
-
-  }, [])
-
-
   type formValues = {
-    username: string
     password: string
-    Email: string
+    email: string
     check: boolean
   }
 
+  // react hook form
   const form = useForm<formValues>()
   const { register, control, handleSubmit, formState } = form
   const { errors } = formState
 
+  //login custom hook
+  const [login, loading, error, success] = useLoginApi();
 
+  //send data to server
   const onSubmit = (data: formValues) => {
-    console.log(data);
+    const dataToSend: loginApiModel = {
+      email: data.email,
+      password: "aliali123"
+    }
 
+    login(dataToSend)
   }
 
   return (
     <>
       <FormLayout>
-
-        {/* <div className='text-center text-white pt-5'>
-          <h2 className='text-3xl md:text-5xl'>Trackify!</h2>
-          <h5 className='text-xl md:text-3xl mt-7'>We help you manage your notes</h5>
-        </div> */}
+        
         <div className='bg-slate-300
        w-72 md:w-96 mx-auto p-5 rounded-lg bg-opacity-50'>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {error && <span className='text-left text-red-800 text-xs mb-2 ml-2'>{error}</span>}
             <div className="flex flex-col">
-              <TextField id='username' label="user name" variant="outlined" className='mt-1 bg-slate-200 border-0'
-                {...register("username", {
-                  required: "username shouldn't be empty"
-                })}
-              />
-              <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.username?.message}</span>
-              <TextField id='password' type={'password'} label="password" variant="outlined" className='mt-1 bg-slate-200 border-0'
+              <TextField id='password' key={'password'} type={'password'} label="password" variant="outlined" className='mt-1 bg-slate-200 border-0'
                 {...register("password", {
                   required: "password shouldn't be empty",
                 })}
               />
               <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.password?.message}</span>
-              <TextField id='Email' type={'Email'} label="Email" variant="outlined" className='mt-1 bg-slate-200 border-0'
-                {...register("Email", {
+              <TextField id='Email' key={`email`} type={'Email'} label="Email" variant="outlined" className='mt-1 bg-slate-200 border-0'
+                {...register("email", {
                   required: "Email shouldn't be empty",
                   pattern: {
                     value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
@@ -70,7 +61,10 @@ const LoginPage = () => {
                   }
                 })}
               />
-              <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.Email?.message}</span>
+              <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.email?.message}</span>
+              <div className='flex justify-center'>
+                {loading && <CircularProgress color="secondary" />}
+              </div>
               <FormGroup>
                 <FormControlLabel
                   {...register("check", {
@@ -78,7 +72,7 @@ const LoginPage = () => {
                   })}
                   control={<Checkbox defaultChecked />} label="Remember me" />
               </FormGroup>
-              <Button type='submit' variant='contained' color='primary'>Log in</Button>
+              <Button disabled={!formState.isValid} type='submit' variant='contained' color='primary'>Log in</Button>
             </div>
           </form>
           <Typography variant='subtitle2' sx={{ marginTop: '1rem' }} className=''>

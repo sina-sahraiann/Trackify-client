@@ -3,13 +3,18 @@ import { Masonry } from '@mui/lab';
 import noteModel from '../../models/note';
 import EachNote from './EachNote';
 import { Modal, Typography } from '@mui/material';
-import React from 'react';
+import { resolve } from 'path';
+import { noteList } from '../../services/AllNotes';
+import { useState } from 'react';
+import loginApi from '../../api/loginApi';
+import register from '../../api/loginApi';
+
 
 
 
 const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
 
-
+  const [state, setState] = useState(0)
 
   return (
     <Box>
@@ -18,7 +23,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote key={index} {...note} />
+                <EachNote key={`Eachnote${index}`} {...note} />
               )
             )
           }
@@ -29,7 +34,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote key={index} {...note} />
+                <EachNote key={`Eachnotemdblock${index}`} {...note} />
               )
             )
           }

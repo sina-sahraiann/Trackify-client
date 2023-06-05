@@ -1,20 +1,21 @@
 import MainLayout from '../../components/layout/main/MainLayout'
 import CardNoteHolder from './CardNoteHolder'
-import { noteList } from '../../services/AllNotes'
 import AllNotes from './AllNotes'
 import Header_section from '../../components/common/Header_section'
 import SwithAccorCard from '../../components/common/SwithAccorCard'
 import { useState } from 'react'
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Modal, Skeleton, Stack, TextField } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StateSlider from '../../components/common/StateSlider'
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import InsertEmoticonRoundedIcon from '@mui/icons-material/InsertEmoticonRounded';
 import ThumbUpOffAltRoundedIcon from '@mui/icons-material/ThumbUpOffAltRounded';
-import register from '../../api/register'
 import { useForm } from 'react-hook-form'
-import { error } from 'console'
 import { DevTool } from '@hookform/devtools'
+import useCreateNewNote from '../../hooks/useCreateNewNoteApi'
+import LoadingSkeleton from './LoadingSkeleton'
+import useGetAllNotes from '../../hooks/useGetAllNotesApi'
+import axios from 'axios'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -30,63 +31,44 @@ const style = {
 
 const HomePage = () => {
 
-  const [open, setOpen] = useState(false);
+  //get all note custom hook api
+  const [notesData, gaIsLoading, gaError, gaSuccess] = useGetAllNotes()
 
+  const [open, setOpen] = useState(false);
+  const [noteList, setNoteList] = useState(notesData);
   const [isCard, setIsCard] = useState<boolean>(false)
 
-  const [formstate, setFormState] = useState({
-    Title: '',
-    description: '',
-    happiness: 0,
-    health: 0,
-    Satisfactioon: 0,
-  })
-
-  type formValues = {
+  interface formValues {
     title: string
-    description: string
+    text: string
     happiness: number
-    satisfactuion: number
+    satisfaction: number
     health: number
   }
 
+  //usin react hook form
   const form = useForm<formValues>()
   const { register, control, handleSubmit, formState } = form
   const { errors } = formState
 
-  const handleOpen = () => setOpen(true)
+  //using create note custom hook
+  const [createNote, cnLoading, cnError, cnSuccess] = useCreateNewNote();
 
+  const onsubmit = (data: formValues) => {
+    const dataToSend: formValues = {
+      title: data.title,
+      happiness: data.happiness,
+      health: data.health,
+      text: data.text,
+      satisfaction: data.satisfaction
+    }
+    
+    createNote(dataToSend)
+  }
+
+  const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false);
 
-  const onChangeTitle: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = (e) => {
-    setFormState(
-      { ...formstate, Title: e.target.value }
-    )
-  }
-
-  const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = (e) => {
-    setFormState(
-      { ...formstate, description: e.target.value }
-    )
-  }
-
-  const onHappinessChange = (value: number): void => {
-    setFormState(
-      { ...formstate, happiness: value }
-    )
-  }
-
-  const onHealthChange = (value: number): void => {
-    setFormState(
-      { ...formstate, health: value }
-    )
-  }
-
-  const onSatisfactionChange = (value: number): void => {
-    setFormState(
-      { ...formstate, Satisfactioon: value }
-    )
-  }
 
   const getChecked = (check: boolean) => {
     setIsCard(check)
@@ -102,12 +84,18 @@ const HomePage = () => {
               <span className='md:block hidden mr-3'>Add new note</span>
               <AddCircleIcon />
             </Button>
-            <SwithAccorCard onClick={getChecked} />
+            <div className='flex'>
+              <SwithAccorCard onClick={getChecked} />
+
+            </div>
           </div>
         </div>
         {
-          isCard ? <AllNotes noteList={noteList} /> :
-            <CardNoteHolder noteList={noteList} />
+          noteList ?
+          isCard ?
+            <AllNotes noteList={noteList} /> :
+            <CardNoteHolder noteList={noteList} />:
+           <LoadingSkeleton/>
         }
       </MainLayout>
       <Modal
@@ -117,25 +105,38 @@ const HomePage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <form>
+          <form onSubmit={handleSubmit(onsubmit)} noValidate>
             <div className="flex flex-col gap-8">
-              <TextField id="outlined-basic" label="Title" variant="outlined" className='my-4 bg-slate-200 border-0' onChange={onChangeTitle} />
-              <TextField multiline={true} id="outlined-basic" minRows={'5'} type={'text'} label="Description" variant="outlined" onChange={onChangeDescription} className='my-4 bg-slate-200 border-0' />
-              <StateSlider title='happiness' onValueChange={onHappinessChange}>
+              <TextField id="outlined-basic" label="Title" variant="outlined" className='my-4 bg-slate-200 border-0'
+                {...register("title", {
+                  required: "Title shouldn't be empty",
+                })}
+              />
+              <TextField multiline={true} id="outlined-basic" minRows={'5'} type={'text'} label="Description" variant="outlined" className='my-4 bg-slate-200 border-0'
+                {...register("text", {
+                  required: "Description shouldn't be empty",
+                })}
+              />
+              <StateSlider title='happiness' formRegister={register}>
                 <InsertEmoticonRoundedIcon />
               </StateSlider>
-              <StateSlider title='Health' onValueChange={onHealthChange}>
+              <StateSlider title='health' formRegister={register}>
                 <HealthAndSafetyIcon />
               </StateSlider>
-              <StateSlider title='Satisfactioon' onValueChange={onSatisfactionChange}>
+              <StateSlider title='satisfaction' formRegister={register}>
                 <ThumbUpOffAltRoundedIcon />
               </StateSlider>
-              <Button variant='contained' color='success'>Create note</Button>
+              <div className='flex justify-center'>
+                {cnLoading && <CircularProgress color="secondary" />}
+              </div>
+              <Button disabled={!formState.isValid} variant='contained' color='success' type='submit' >
+                Create note
+              </Button>
             </div>
           </form>
         </Box>
       </Modal>
-      <DevTool control={control}/>
+      <DevTool control={control} />
     </>
   )
 }

@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
+
 export const sizes: any = {
   sm: "640px",
   md: "768px",
   lg: "1024px",
   xl: "1280px",
-  "2xl": "1536px",
+  xl2: "1536px",
 };
 
 export const useMediaQuery = (screen: any) => {
@@ -22,11 +24,3 @@ export const useMediaQuery = (screen: any) => {
 
   return matches;
 };
-
-function useState(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}
-
-function useEffect(arg0: () => () => void, arg1: any[]) {
-  throw new Error("Function not implemented.");
-}

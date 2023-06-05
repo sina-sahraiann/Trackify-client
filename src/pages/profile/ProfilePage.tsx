@@ -11,7 +11,7 @@ const ProfilePage = () => {
     <>
       <MainLayout>
         <Header_section title='Profile' />
-        <div className='relative pt-11'>
+        <div className='relative pt-11 mt-16'>
           <ProfileAvatar imageUrl="https://randomuser.me/api/portraits/men/51.jpg" />
           <section className=' bg-slate-100 pb-10 md:pt-32 md:px-11 rounded-xl'>
             <Typography className='text-center md:text-left pb-10 opacity-80' variant='h4'>
@@ -26,7 +26,7 @@ const ProfilePage = () => {
             <div className='text-left opacity-60 md:text-xl'>
               sinasahraian780@gmail.com
             </div>
-            <form className='text-left md:px-11 pt-6skype'>
+            <form className='text-left pt-6'>
               <Typography className='pb-5' variant='h5'>
                 Change password
               </Typography>

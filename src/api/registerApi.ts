@@ -1,18 +1,18 @@
 import axios from "axios";
 import { log } from "console";
 
-const register = () => {
+const registerApi = () => {
 
   axios.post(
-      "https://8cc0-5-213-138-142.eu.ngrok.io/account/register",
+      "http://62.106.95.121/api/account/register",
       {
         fristName: "sina",
-        lastName: "sahraeian",
+        lastName: "sahraeian",  
         googleAuthCode: "sfg8esgf",
         gender: 0,
-        birthDate: "2023-03-11t08:30:39.322z",
+        birthDate: "2023-03-11T08:30:39.322",
         password: "aka2bruh",
-        ponfirmPassword: "aka2bruh",
+        confirmPassword: "aka2bruh",
         email: "sinasahraian780@gmail.com",
       }
     )
@@ -20,4 +20,4 @@ const register = () => {
     .catch((err) => console.log(err));
 };
 
-export default register;
+export default registerApi;
