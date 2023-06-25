@@ -1,8 +1,11 @@
 export default interface noteModel {
-  id: string;
+  createAt?: string;
+  updatedAt?: string;
+  userId?: string;
+  id?: string;
   title?: string;
-  description: string;
-  date: string;
+  text?: string;
+  date?: string;
   satisfaction?: number;
   happiness?: number;
   health?: number;

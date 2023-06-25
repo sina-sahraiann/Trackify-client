@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/apiInstance";
-import noteModel from   '../models/note'
+import noteModel from "../models/note";
 
-const useGetNote = (noteId: string):[
-    null| noteModel,
-    boolean,
-    string|null,
-    boolean
-] => {
-
-
+const useGetNote = (
+  noteId: string | undefined
+): [null | noteModel, boolean, string | null, boolean] => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null|string>(null);
+  const [error, setError] = useState<null | string>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const token = localStorage.getItem("token");
+  interface dataToSendModel {
+    id: string | undefined;
+  }
+
+  const dataToSend: dataToSendModel = {
+    id: noteId,
+  };
+
+  const queryParams = Object.entries(dataToSend)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    )
+    .join("&");
 
   useEffect(() => {
-    const getNote = async () => {
-      try {
-        const response = await axiosInstance.get("api/account/login", {
-          params: {
-            id: noteId,
-          },
-        });
+    axiosInstance
+      .get(`/api/Note/getnote?${queryParams}`)
+      .then((response) => {
+        setIsLoading(true);
         if (response.status === 200) {
           console.log("success");
           setData(response.data);
@@ -32,15 +37,15 @@ const useGetNote = (noteId: string):[
           setError(null);
           setSuccess(true);
         }
-      } catch (error) {
-        setError("couldnt get note")
-        throw new Error("coudnt get note");
-      }
-    };
-
+      })
+      .catch((err) => {
+        setError("couldnt get note");
+        console.log(err);
+      });
     setIsLoading(false);
-    setSuccess(false);
   }, []);
 
   return [data, isLoading, error, success];
 };
+
+export default useGetNote;

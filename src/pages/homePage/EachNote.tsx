@@ -1,12 +1,14 @@
-import { Paper, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
+import { Paper, Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from '@mui/material'
 import React from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import noteModel from '../../models/note';
 import PersonalState from '../../components/common/PersonalState';
+import EditIcon from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom';
 
 
 
-const EachNote = ({ title, description, date, happiness, health, satisfaction
+const EachNote = ({ id, title, text, date, happiness, health, satisfaction
 }: noteModel) => (
   <>
     <Paper>
@@ -18,7 +20,7 @@ const EachNote = ({ title, description, date, happiness, health, satisfaction
         </AccordionSummary>
         <AccordionDetails className='text-left'>
           <Typography>
-            {description}
+            {text}
           </Typography>
           <div className='flex justify-center mt-4'>
             <PersonalState
@@ -32,6 +34,9 @@ const EachNote = ({ title, description, date, happiness, health, satisfaction
           </div>
 
         </AccordionDetails>
+        <AccordionActions sx={{ padding: 0 }} className='flex justify-end p-0'>
+          <Link to={`updateNotes/${id}`}>Edit <EditIcon fontSize='small' /></Link>
+        </AccordionActions>
       </Accordion>
     </Paper>
   </>

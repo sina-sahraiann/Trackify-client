@@ -27,7 +27,7 @@ const useSignupApi = (): [
             setSuccess(true);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-
+            localStorage.setItem("refreshTokenIsValid", 'true');
             setTimeout(() => {
               navigate("/");
             }, 1000);

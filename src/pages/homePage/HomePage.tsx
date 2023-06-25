@@ -16,6 +16,8 @@ import useCreateNewNote from '../../hooks/useCreateNewNoteApi'
 import LoadingSkeleton from './LoadingSkeleton'
 import useGetAllNotes from '../../hooks/useGetAllNotesApi'
 import axios from 'axios'
+import { noteList1 } from '../../services/AllNotes'
+import { useNavigate } from 'react-router'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -32,11 +34,12 @@ const style = {
 const HomePage = () => {
 
   //get all note custom hook api
-  const [notesData, gaIsLoading, gaError, gaSuccess] = useGetAllNotes()
-
+  const [notesData, gaIsLoading, gaError, gaSuccess, gaSetRetry] = useGetAllNotes()
   const [open, setOpen] = useState(false);
   const [noteList, setNoteList] = useState(notesData);
   const [isCard, setIsCard] = useState<boolean>(false)
+  const navigate = useNavigate()
+
 
   interface formValues {
     title: string
@@ -62,8 +65,10 @@ const HomePage = () => {
       text: data.text,
       satisfaction: data.satisfaction
     }
-    
+
     createNote(dataToSend)
+    gaSetRetry(prevState => !prevState)
+    handleClose()
   }
 
   const handleOpen = () => setOpen(true)
@@ -72,6 +77,10 @@ const HomePage = () => {
 
   const getChecked = (check: boolean) => {
     setIsCard(check)
+  }
+
+  if (localStorage.getItem('refreshTokenIsValid') === 'false') {
+    navigate('/login')
   }
 
   return (
@@ -86,16 +95,16 @@ const HomePage = () => {
             </Button>
             <div className='flex'>
               <SwithAccorCard onClick={getChecked} />
-
             </div>
           </div>
         </div>
         {
-          noteList ?
-          isCard ?
-            <AllNotes noteList={noteList} /> :
-            <CardNoteHolder noteList={noteList} />:
-           <LoadingSkeleton/>
+          notesData ?
+            isCard ?
+              <AllNotes noteList={notesData} /> :
+              <CardNoteHolder noteList={notesData} /> :
+            <LoadingSkeleton />
+
         }
       </MainLayout>
       <Modal

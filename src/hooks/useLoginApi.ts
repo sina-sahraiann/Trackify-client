@@ -27,6 +27,7 @@ const useLoginApi = ():[
           setSuccess(true);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("refreshToken", response.data.refreshToken);
+          localStorage.setItem("refreshTokenIsValid", 'true');
           setTimeout(() => {
             navigate("/");
           }, 1000);
@@ -35,6 +36,7 @@ const useLoginApi = ():[
       .catch((err) => {
         console.log(err);
         setError('An error occurred during login')
+        setLoading(false)
       });
   };
 

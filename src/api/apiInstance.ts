@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { useNavigate } from "react-router";
 
 // Replace 'your_refresh_token_here' with your actual refresh token
 let refreshToken = "your_refresh_token_here";
@@ -51,26 +52,38 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
+
+
+
 // Function to get a new token using the refresh token
-async function getNewToken() {
-  // Implement your logic to obtain a new token using the refresh token
-  // You can use Axios or any other method to send a request to the token refresh endpoint
+const getNewToken = async (): Promise<AxiosResponse> => {
   try {
     const refreshtoken = localStorage.getItem("refreshToken");
 
     const response = await axios.post(
-      `http://62.106.95.121/api/Account/refreshtoken?RefreshToken=${refreshtoken}`
+      `http://62.106.95.121/api/Account/RefreshToken`,
+      {
+        refreshToken: refreshtoken,
+      }
     );
+
     const newToken = response.data.token;
-    console.log(newToken);
-    
+
     refreshToken = response.data.refreshToken;
     localStorage.setItem("token", newToken);
     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("refreshTokenIsValid", 'true');
     return newToken;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      localStorage.setItem("refreshTokenIsValid", 'false');
+    }
     throw new Error("Failed to get a new token");
   }
-}
+};
 
 export default axiosInstance;
+function useState(arg0: boolean): [any, any] {
+  throw new Error("Function not implemented.");
+}
+

@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { Link, NavLink } from 'react-router-dom';
 import { userList } from '../../../services/list_of_all_users';
 import { Avatar } from '@mui/material';
+import { Offline, Online } from 'react-detect-offline';
 
 
 interface Props {
@@ -112,6 +113,11 @@ const AppBarWithDrawer = (props: Props) => {
                         </Box>
                     </Link>
                 </Toolbar>
+                <Offline>
+                    <div className='bg-gray-700 flex font-mono justify-center'>
+                            you are offline
+                    </div>
+                </Offline>
             </AppBar>
             <Box component="nav">
                 <Drawer

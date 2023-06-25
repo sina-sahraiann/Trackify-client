@@ -12,7 +12,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PersonalState from '../../components/common/PersonalState';
 import { Link } from 'react-router-dom';
 
-const EachNoteCard = ({ id, title, description, date, happiness, health, satisfaction }: noteModel) => {
+const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }: noteModel) => {
 
 
     return (
@@ -31,7 +31,7 @@ const EachNoteCard = ({ id, title, description, date, happiness, health, satisfa
 
                     <div>
                         <Typography className='truncate truncate-end' variant='body1'>
-                            {description}
+                            {text}
                         </Typography>
                     </div>
 
@@ -48,7 +48,7 @@ const EachNoteCard = ({ id, title, description, date, happiness, health, satisfa
                 </CardContent>
                 <AttachFileIcon fontSize='medium' className='absolute -top-1 -right-0 opacity-50 rotate-45' />
                 <CardActions sx={{ padding: 0 }} className='flex justify-end p-0'>
-                    <Button color='error' size="medium">Edit <EditIcon fontSize='small' /></Button>
+                    <Link to={`updateNotes/${id}`}>Edit <EditIcon fontSize='small' /></Link>
                 </CardActions>
             </Card>
 

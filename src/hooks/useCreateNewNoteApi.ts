@@ -20,15 +20,6 @@ const useCreateNewNote = (): [
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem("token");
-
-    const authAxios = axios.create({
-      baseURL: "http://62.106.95.121",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
     axiosInstance
       .post("/api/Note/createnote", data)
       .then((response) => {
@@ -42,6 +33,8 @@ const useCreateNewNote = (): [
         console.log(err);
         setError("An error occurred during creating the note");
       });
+
+      setLoading(false)
   };
 
   return [createNote, loading, error, success];

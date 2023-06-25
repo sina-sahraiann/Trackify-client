@@ -4,11 +4,9 @@ import noteModel from '../../models/note';
 import EachNote from './EachNote';
 import { Modal, Typography } from '@mui/material';
 import { resolve } from 'path';
-import { noteList } from '../../services/AllNotes';
 import { useState } from 'react';
 import loginApi from '../../api/loginApi';
 import register from '../../api/loginApi';
-
 
 
 
