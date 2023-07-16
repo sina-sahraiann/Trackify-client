@@ -26,15 +26,14 @@ const useCreateNewNote = (): [
         if (response.status === 200) {
           setError(null);
           setSuccess(true);
-          console.log(response);
+          setLoading(false)
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false)
         setError("An error occurred during creating the note");
       });
-
-      setLoading(false)
   };
 
   return [createNote, loading, error, success];

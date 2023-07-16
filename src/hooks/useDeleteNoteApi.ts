@@ -24,8 +24,10 @@ const useDeleteNote = (): [
         setSuccess(true);
         console.log(response);
       }
+      setLoading(false);
     } catch (error) {
       setError("An error occurred during deleting the note");
+      setLoading(false)
       throw new Error("An error occurred during deleting the note");
     }
   };

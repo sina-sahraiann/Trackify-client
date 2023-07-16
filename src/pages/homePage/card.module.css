@@ -1,0 +1,49 @@
+.article {
+  margin: 50px;
+  padding: 20px;
+  font-family: sans-serif;
+  color: #000;
+  position: relative;
+  background: linear-gradient(-135deg, transparent 1.5em, #FFB93E 0) no-repeat;
+  background-repeat: no-repeat;
+  border-radius: 5px;
+}
+
+.article::after{
+  content: '';
+  width: 2.13em;
+  height: 2.15em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  background: linear-gradient(-135deg, transparent 1.5em, hwb(38 5% 45% / 0.495) 0) no-repeat;
+  border-bottom-left-radius: 5px;
+  background-repeat: no-repeat;
+}
+
+.curved,
+.nonfortyfive {
+  background: linear-gradient(-150deg, transparent 1.5em, #3e6267 0) no-repeat;
+}
+.nonfortyfive::after{
+  content: '';
+  height: 2.9em;
+  width: 1.77em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  background: linear-gradient(to left bottom, transparent 50%, #7bc2d2 0);
+  transform: translate(-10px, -10px) rotate(-28.5deg);
+  border-bottom-left-radius: 5px;
+  box-shadow: -4px 3px 3px #2e5c67;
+}
+
+.curved::after {
+    height: 3.2em;
+    width: 1.35em;
+    transform: translate(-0.8em, -0.73em) rotate(-36.7deg);
+    background: linear-gradient(to left bottom, transparent 50%, #7da9b3 0, #d2f1fb 27px, #025364);
+    box-shadow: 0 6px 4px -4px #112429;
+}

@@ -1,8 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useNavigate } from "react-router";
+import mem from "mem";
 
-// Replace 'your_refresh_token_here' with your actual refresh token
-let refreshToken = "your_refresh_token_here";
 
 const axiosInstance = axios.create({
   baseURL: "http://62.106.95.121",
@@ -18,7 +16,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+     Promise.reject(error);
   }
 );
 
@@ -28,21 +26,24 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const originalRequest = error.config;
     if (error.response.status === 401 && !error.config._retry) {
+      error.config._retry = true;
       // Token is expired or invalid
       try {
-        const newToken = await getNewToken();
-        if (newToken) {
+        const newToken = await memoizedRefreshToken();
+        
+        if (newToken) 
+        {
           // Retry the failed request with the new token
-          error.config.headers.Authorization = `Bearer ${newToken}`;
-          error.config._retry = true;
-          return axiosInstance(error.config);
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
         // Failed to get a new token
         return Promise.reject(refreshError);
       }
-    }
+    }    
     return Promise.reject(error);
   }
 );
@@ -69,21 +70,23 @@ const getNewToken = async (): Promise<AxiosResponse> => {
 
     const newToken = response.data.token;
 
-    refreshToken = response.data.refreshToken;
+    const newRefreshToken = response.data.refreshToken;
     localStorage.setItem("token", newToken);
-    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("refreshToken", newRefreshToken);
     localStorage.setItem("refreshTokenIsValid", 'true');
     return newToken;
   } catch (error: any) {
-    if (error.response.status === 401) {
+    if(error.response.message === 401){
       localStorage.setItem("refreshTokenIsValid", 'false');
     }
     throw new Error("Failed to get a new token");
   }
 };
 
-export default axiosInstance;
-function useState(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}
+const maxAge = 5000;
 
+const memoizedRefreshToken = mem(getNewToken, {
+  maxAge,
+});
+
+export default axiosInstance;

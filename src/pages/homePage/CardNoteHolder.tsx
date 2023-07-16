@@ -18,8 +18,30 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     }
                 </Masonry>
             </div>
-            <div className='hidden md:block'>
+            <div className='hidden md:block lg:hidden' >
                 <Masonry columns={2} spacing={3} >
+                    {
+                        noteList.map(
+                            (note, index) => (
+                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
+                            )
+                        )
+                    }
+                </Masonry>
+            </div>
+            <div className='hidden xl:hidden lg:block'>
+                <Masonry columns={3} spacing={3} >
+                    {
+                        noteList.map(
+                            (note, index) => (
+                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
+                            )
+                        )
+                    }
+                </Masonry>
+            </div>
+            <div className='hidden xl:block'>
+                <Masonry columns={4} spacing={3} >
                     {
                         noteList.map(
                             (note, index) => (

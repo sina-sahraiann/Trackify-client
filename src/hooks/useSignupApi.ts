@@ -23,11 +23,10 @@ const useSignupApi = (): [
         .post("http://62.106.95.121/api/account/register", userData)
         .then((response) => {
           if (response.status === 200) {
-            
             setSuccess(true);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-            localStorage.setItem("refreshTokenIsValid", 'true');
+            localStorage.setItem("refreshTokenIsValid", "true");
             setTimeout(() => {
               navigate("/");
             }, 1000);
@@ -35,7 +34,6 @@ const useSignupApi = (): [
         })
         .catch((error) => {
           console.log(error);
-      
           setError("An error occurred during sign up");
         });
 

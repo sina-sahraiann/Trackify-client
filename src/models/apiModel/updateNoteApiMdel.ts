@@ -1,5 +1,5 @@
 interface updateNoteApiModel {
-    id : string
+    id ?: string | undefined
     title: string
     text: string
     happiness: number

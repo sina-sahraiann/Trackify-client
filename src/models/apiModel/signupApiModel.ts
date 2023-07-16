@@ -1,5 +1,5 @@
 interface signupApiModel {
-  fristName: string;
+  firstName: string;
   lastName: string;
   googleAuthCode: string;
   gender: number;

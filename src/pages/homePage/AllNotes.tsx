@@ -12,7 +12,7 @@ import register from '../../api/loginApi';
 
 const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
 
-  const [state, setState] = useState(0)
+  console.log(noteList);
 
   return (
     <Box>
@@ -27,7 +27,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           }
         </Masonry>
       </div>
-      <div className='hidden md:block'>
+      <div className='hidden lg:hidden md:block'>
         <Masonry columns={2} spacing={2} className='mx-auto'>
           {
             noteList.map(
@@ -38,6 +38,17 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           }
         </Masonry>
       </div>
+      <div className='hidden lg:block'>
+                <Masonry columns={3} spacing={2} >
+                    {
+                        noteList.map(
+                            (note, index) => (
+                                <EachNote {...note} key={`eachnotecardmdblock${index}`}/>
+                            )
+                        )
+                    }
+                </Masonry>
+            </div>
     </Box>
   );
 }

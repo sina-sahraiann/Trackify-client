@@ -17,6 +17,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { userList } from '../../../services/list_of_all_users';
 import { Avatar } from '@mui/material';
 import { Offline, Online } from 'react-detect-offline';
+import { UserContext } from '../../../providers/UserProvider';
 
 
 interface Props {
@@ -28,6 +29,7 @@ interface Props {
     children: React.ReactNode
 
 }
+
 
 const drawerWidth = 240;
 const navItems = [
@@ -47,9 +49,12 @@ const navItems = [
         name: 'Sign up',
         path: '/SignUp'
     }
+    
 ];
 
 const AppBarWithDrawer = (props: Props) => {
+
+
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -62,7 +67,7 @@ const AppBarWithDrawer = (props: Props) => {
             <Typography variant="h6" sx={{ my: 2 }}>
                 Trackify
             </Typography>
-            <Divider />
+           
             <List>
                 {navItems.map((item) => (
                     <NavLink key={item.name} to={item.path} >
@@ -78,7 +83,7 @@ const AppBarWithDrawer = (props: Props) => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar sx={{ backgroundColor: '#967836' }} component="nav">
+            <AppBar sx={{ backgroundColor: '#192B7D' }} component="nav">
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -107,6 +112,7 @@ const AppBarWithDrawer = (props: Props) => {
                             </NavLink>
                         ))}
                     </Box>
+                    
                     <Link to={'/profile'}>
                         <Box>
                             <Avatar about='sina' src={userList[0].Avatarimage} />

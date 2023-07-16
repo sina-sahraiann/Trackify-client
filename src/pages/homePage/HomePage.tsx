@@ -3,7 +3,7 @@ import CardNoteHolder from './CardNoteHolder'
 import AllNotes from './AllNotes'
 import Header_section from '../../components/common/Header_section'
 import SwithAccorCard from '../../components/common/SwithAccorCard'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Box, Button, CircularProgress, Modal, Skeleton, Stack, TextField } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StateSlider from '../../components/common/StateSlider'
@@ -18,10 +18,16 @@ import useGetAllNotes from '../../hooks/useGetAllNotesApi'
 import axios from 'axios'
 import { noteList1 } from '../../services/AllNotes'
 import { useNavigate } from 'react-router'
+import useNoteSearch from '../../hooks/useSearch'
+import getAllNotesApiModel from '../../models/apiModel/getAllNotesApiModel'
+import DateFilter from './DateFilter'
+import useGetUser from '../../hooks/useGetUser'
+import { UserContext, UserContextProps } from '../../providers/UserProvider'
+import StreakCard from '../../components/common/StreakCard'
 
 const style = {
   position: 'absolute' as 'absolute',
-  top: '50%',
+  top: '60%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
@@ -31,14 +37,16 @@ const style = {
   p: 4,
 };
 
+
+
 const HomePage = () => {
 
   //get all note custom hook api
   const [notesData, gaIsLoading, gaError, gaSuccess, gaSetRetry] = useGetAllNotes()
   const [open, setOpen] = useState(false);
-  const [noteList, setNoteList] = useState(notesData);
   const [isCard, setIsCard] = useState<boolean>(false)
   const navigate = useNavigate()
+  const { user } = useContext(UserContext) as UserContextProps
 
 
   interface formValues {
@@ -48,6 +56,9 @@ const HomePage = () => {
     satisfaction: number
     health: number
   }
+
+  const [notesFound, searchInput, handleSearchInputChange, resetSearchInput] = useNoteSearch(notesData)
+
 
   //usin react hook form
   const form = useForm<formValues>()
@@ -69,6 +80,7 @@ const HomePage = () => {
     createNote(dataToSend)
     gaSetRetry(prevState => !prevState)
     handleClose()
+    resetSearchInput()
   }
 
   const handleOpen = () => setOpen(true)
@@ -79,32 +91,60 @@ const HomePage = () => {
     setIsCard(check)
   }
 
-  if (localStorage.getItem('refreshTokenIsValid') === 'false') {
-    navigate('/login')
+  const renderNotes = () => {
+    if (searchInput === '') {
+      return notesData ?
+        isCard ?
+          <AllNotes noteList={notesData} /> :
+          <CardNoteHolder noteList={notesData} /> :
+        <LoadingSkeleton />
+    } else {
+      return notesFound ?
+        isCard ?
+          <AllNotes noteList={notesFound} /> :
+          <CardNoteHolder noteList={notesFound} /> :
+        <LoadingSkeleton />
+    }
   }
 
   return (
     <>
       <MainLayout>
         <div>
-          <Header_section title='All notes' related='/all' />
+          <div className='flex justify-between py-5'>
+            <Header_section title='All notes' related='/all' />
+            {user && <StreakCard journalingStreak={user.journalingStreak} />}
+          </div>
           <div className='flex justify-between mb-10'>
-            <Button onClick={handleOpen} size='small' variant='contained' color='primary'>
-              <span className='md:block hidden mr-3'>Add new note</span>
-              <AddCircleIcon />
-            </Button>
+            <div className='flex '>
+              <Button onClick={handleOpen} size='small' variant='contained' sx={{
+                backgroundColor: '#FFB200',
+                marginRight: '10px',
+                '&:hover': {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}>
+
+                <span className='md:block hidden mr-3'>Create new note</span>
+                <AddCircleIcon />
+              </Button>
+              <DateFilter />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={handleSearchInputChange}
+                placeholder="Search..."
+                className="mx-5 px-4 py-2 rounded-md bg-gray-200 focus:bg-white focus:outline-none"
+              />
+            </div>
             <div className='flex'>
               <SwithAccorCard onClick={getChecked} />
             </div>
           </div>
         </div>
         {
-          notesData ?
-            isCard ?
-              <AllNotes noteList={notesData} /> :
-              <CardNoteHolder noteList={notesData} /> :
-            <LoadingSkeleton />
-
+          renderNotes()
         }
       </MainLayout>
       <Modal
@@ -112,6 +152,15 @@ const HomePage = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={
+          {
+            top: '10%',
+            position: 'absolute',
+            overflow: 'scroll',
+            height: '100%',
+            display: 'block'
+          }
+        }
       >
         <Box sx={style}>
           <form onSubmit={handleSubmit(onsubmit)} noValidate>

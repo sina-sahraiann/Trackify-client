@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,26 +12,37 @@ import EditIcon from '@mui/icons-material/Edit';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PersonalState from '../../components/common/PersonalState';
 import { Link } from 'react-router-dom';
+import classes from './card.module.css'
 
 const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }: noteModel) => {
 
+    const [isVisible, setIsVisible] = useState(false)
+
+    const onMouseEnterHandler = () => {
+        setIsVisible(true)
+    }
+
+    const onMouseLeaveHandler = () => {
+        setIsVisible(false)
+    }
+
+    // sx={{ backgroundColor: '#FFB93E', position: 'relative' }}
 
     return (
 
         <>
-            <Card raised={true} sx={{ backgroundColor: '#F8D353', position: 'relative' }}>
-                <CardContent className='text-left' >
-                    <div className='flex justify-between'>
-                        <div className='mb-10 text-2xl font-bold'>
-                            <Typography variant='inherit'>
+            <div className={classes.article} onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler} >
+                <CardContent sx={{padding : '0'}} className='text-left' >
+                    <div className='flex justify-between mb-5'>
+                        <div className='flex align-center'>
+                            <div className='text-2xl font-bold'>
                                 {title}
-                            </Typography>
+                            </div>
+                            <Link className={`self-end ms-1 transition-all opacity-75 hover:opacity-100 hover:font-extrabold ${isVisible ? ' ' : 'hidden '}`} to={`updateNotes/${id}`}><EditIcon fontSize='small' /></Link>
                         </div>
-                        <Link to={`${id}`}>view full</Link>
                     </div>
-
                     <div>
-                        <Typography className='truncate truncate-end' variant='body1'>
+                        <Typography className='truncate' variant='body1'>
                             {text}
                         </Typography>
                     </div>
@@ -46,11 +58,10 @@ const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }
                         />
                     </div>
                 </CardContent>
-                <AttachFileIcon fontSize='medium' className='absolute -top-1 -right-0 opacity-50 rotate-45' />
-                <CardActions sx={{ padding: 0 }} className='flex justify-end p-0'>
-                    <Link to={`updateNotes/${id}`}>Edit <EditIcon fontSize='small' /></Link>
-                </CardActions>
-            </Card>
+                <div className='flex justify-end m-3 translate-x-5 translate-y-3 mt-5 mb-0 opacity-75 hover:opacity-100 h-6'>
+                    <Link to={`${id}`}  className={`text-xs p-2 self-center text-white bg-black rounded-lg ${isVisible ? ' ' : 'hidden '}`}>view full</Link>
+                </div>
+            </div>
 
         </>
     );

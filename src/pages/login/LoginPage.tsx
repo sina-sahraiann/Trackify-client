@@ -31,7 +31,7 @@ const LoginPage = () => {
   const onSubmit = (data: formValues) => {
     const dataToSend: loginApiModel = {
       email: data.email,
-      password: "aliali123"
+      password: data.password,
     }
 
     login(dataToSend)

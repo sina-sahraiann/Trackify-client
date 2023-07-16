@@ -2,6 +2,7 @@ import * as React from 'react';
 import Slider from '@mui/material/Slider';
 import { Stack, Typography } from '@mui/material';
 import { UseFormRegister } from 'react-hook-form';
+import { useState } from 'react';
 
 interface formValues {
     title: string
@@ -14,14 +15,16 @@ interface formValues {
 interface Props {
     title: "happiness" | "satisfaction" | "health" | "text" | "text",
     children: React.ReactNode,
-    formRegister: UseFormRegister<formValues>
+    formRegister: UseFormRegister<formValues>,
+    defaultValue?: number
 }
 
-const StateSlider = ({ title, children,  formRegister }: Props) => {
+const StateSlider = ({ title, children, formRegister, defaultValue }: Props) => {
 
     // const onchange = (event: any, value: any) => {
     //     onValueChange(value)
     // }
+    const [isDefault, setIsDefault] = useState(defaultValue)
 
     return (
         <Stack>

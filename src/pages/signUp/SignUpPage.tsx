@@ -41,16 +41,16 @@ const SignUp = () => {
   const { errors } = formState
   const [signUp, loading, error, success] = useSignupApi();
 
-  const onSubmit = (data: signUpValues) => {
+  const onSubmit = (data:any) => {
     const dataToSend: signupApiModel = {
       email: data.email,
       birthDate: new Date().toISOString(),
-      fristName: data.firstname,
-      confirmPassword: 'aliali123',
+      firstName: data.firstname,
+      confirmPassword: data.password,
       gender: 0,
       googleAuthCode: 'asdasd',
       lastName: data.lastname,
-      password: 'aliali123',
+      password: data.password,
     }
 
     signUp(dataToSend)

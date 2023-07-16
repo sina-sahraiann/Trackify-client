@@ -14,7 +14,7 @@ const useGetAllNotes = (): [
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState<boolean>(false);
-  const [retry , setRetry] = useState<boolean>(false);
+  const [retry, setRetry] = useState<boolean>(false);
 
   const token = localStorage.getItem("token");
 
@@ -27,7 +27,7 @@ const useGetAllNotes = (): [
     pageSize: 130,
     pageNumber: 1,
   };
-  
+
   const queryParams = Object.entries(dataToSend)
     .map(
       ([key, value]) =>
@@ -36,7 +36,7 @@ const useGetAllNotes = (): [
     .join("&");
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     axiosInstance
       .get(`/api/Note/getallnotes?${queryParams}`)
       .then((response) => {
@@ -54,7 +54,7 @@ const useGetAllNotes = (): [
       });
   }, [retry]);
 
-  return [data, isLoading, error, success,setRetry];
+  return [data, isLoading, error, success, setRetry];
 };
 
 export default useGetAllNotes;

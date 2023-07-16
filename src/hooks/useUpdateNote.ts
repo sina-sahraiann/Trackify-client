@@ -2,7 +2,12 @@ import { useState } from "react";
 import axiosInstance from "../api/apiInstance";
 import updateNoteApiModel from "../models/apiModel/updateNoteApiMdel";
 
-const useUpdateNote = () => {
+const useUpdateNote = (): [
+  (data: updateNoteApiModel) => Promise<void>,
+  boolean,
+  string | null,
+  boolean
+] => {
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +24,11 @@ const useUpdateNote = () => {
     } catch (error: any) {
       setError("An error occurred during sign up");
       console.log(error);
-      
     }
     setIsLoading(false);
   };
 
   return [updateNote, success, error, isLoading];
 };
+
+export default useUpdateNote;

@@ -22,6 +22,7 @@ const SwithAccorCard = ({ onClick }: { onClick: (arg0: boolean) => void }) => {
                 checked={checked}
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'controlled' }}
+               color='warning'
             />
         </div>
         </>

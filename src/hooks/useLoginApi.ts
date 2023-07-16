@@ -25,6 +25,8 @@ const useLoginApi = ():[
         if (response.status === 200) {
           setError(null);
           setSuccess(true);
+          console.log(response.data);
+          
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("refreshTokenIsValid", 'true');
@@ -44,3 +46,4 @@ const useLoginApi = ():[
 };
 
 export default useLoginApi;
+

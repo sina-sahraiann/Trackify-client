@@ -1,0 +1,97 @@
+.card {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card .percent {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.card .percent svg {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  transform: rotate(270deg);
+}
+
+.card .percent svg circle {
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke-width: 2;
+  stroke: #191919;
+  transform: translate(1px, 1px);
+}
+
+.card .percent svg circle:nth-child(2) {
+  stroke: var(--clr);
+  stroke-dasharray: 190;
+  stroke-dashoffset: calc(190 - (190 * var(--num)) / 100);
+}
+
+.card .percent svg circle:nth-child(1) {
+    opacity: 0.3;
+}
+
+
+
+.dot {
+  position: absolute;
+  inset: 5px;
+  z-index: 10;
+  transform: rotate(calc(3.6deg * var(--num)));
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: var(--clr);
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--clr),
+   0 0 30px var(--clr);
+}
+
+.number {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.number h2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--clr);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.number h2 span {
+  font-weight: 300;
+  color: var(--clr);
+  font-size: 0.5rem;
+}
+
+.number p {
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  position: absolute;
+  text-transform: 10px;
+  color: var(--clr);
+  bottom: -20px;
+  transform: translateX(-50% , -50%);
+}
