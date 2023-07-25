@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import mem from "mem";
 
-
 const axiosInstance = axios.create({
   baseURL: "http://62.106.95.121",
 });
@@ -16,7 +15,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-     Promise.reject(error);
+    Promise.reject(error);
   }
 );
 
@@ -31,10 +30,9 @@ axiosInstance.interceptors.response.use(
       error.config._retry = true;
       // Token is expired or invalid
       try {
-        const newToken = await memoizedRefreshToken();
-        
-        if (newToken) 
-        {
+        const newToken = await getNewToken();
+
+        if (newToken) {
           // Retry the failed request with the new token
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return axiosInstance(originalRequest);
@@ -43,7 +41,7 @@ axiosInstance.interceptors.response.use(
         // Failed to get a new token
         return Promise.reject(refreshError);
       }
-    }    
+    }
     return Promise.reject(error);
   }
 );
@@ -53,11 +51,15 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
+const navigateToAboutPage = () => {
+  window.history.pushState(null, "", "/login");
 
-
+  const popStateEvent = new PopStateEvent("popstate");
+  window.dispatchEvent(popStateEvent);
+};
 
 // Function to get a new token using the refresh token
-const getNewToken = async (): Promise<AxiosResponse> => {
+const getNewToken = async () => {
   try {
     const refreshtoken = localStorage.getItem("refreshToken");
 
@@ -73,17 +75,14 @@ const getNewToken = async (): Promise<AxiosResponse> => {
     const newRefreshToken = response.data.refreshToken;
     localStorage.setItem("token", newToken);
     localStorage.setItem("refreshToken", newRefreshToken);
-    localStorage.setItem("refreshTokenIsValid", 'true');
+    localStorage.setItem("refreshTokenIsValid", "true");
     return newToken;
   } catch (error: any) {
-    if(error.response.message === 401){
-      localStorage.setItem("refreshTokenIsValid", 'false');
-    }
-    throw new Error("Failed to get a new token");
+    navigateToAboutPage();
   }
 };
 
-const maxAge = 5000;
+const maxAge = 100000;
 
 const memoizedRefreshToken = mem(getNewToken, {
   maxAge,

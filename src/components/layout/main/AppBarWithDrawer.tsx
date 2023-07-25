@@ -18,6 +18,7 @@ import { userList } from '../../../services/list_of_all_users';
 import { Avatar } from '@mui/material';
 import { Offline, Online } from 'react-detect-offline';
 import { UserContext } from '../../../providers/UserProvider';
+import { useEffect, useState } from 'react';
 
 
 interface Props {
@@ -31,6 +32,7 @@ interface Props {
 }
 
 
+
 const drawerWidth = 240;
 const navItems = [
     {
@@ -39,7 +41,7 @@ const navItems = [
     },
     {
         name: 'About',
-        path: '*'
+        path: '#'
     },
     {
         name: 'Log out',
@@ -47,13 +49,40 @@ const navItems = [
     },
     {
         name: 'Sign up',
-        path: '/SignUp'
+        path: '/signup'
     }
-    
+
 ];
+
+const mywindow: Window = window
 
 const AppBarWithDrawer = (props: Props) => {
 
+    const [navbarColor, setNavbarColor] = useState({
+        bg: '#192B7D',
+        color: 'white'
+    });
+
+    useEffect(() => {
+        mywindow.addEventListener('scroll', changeNavbarColor);
+        return () => {
+            mywindow.removeEventListener('scroll', changeNavbarColor);
+        };
+    }, []);
+
+    const changeNavbarColor = () => {
+        if (mywindow.scrollY > 0) {
+            setNavbarColor({
+                bg: '#ffffff',
+                color: 'black',
+            });
+        } else {
+            setNavbarColor({
+                bg: '#192B7D',
+                color: 'white'
+            });
+        }
+    };
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -67,7 +96,7 @@ const AppBarWithDrawer = (props: Props) => {
             <Typography variant="h6" sx={{ my: 2 }}>
                 Trackify
             </Typography>
-           
+
             <List>
                 {navItems.map((item) => (
                     <NavLink key={item.name} to={item.path} >
@@ -83,7 +112,7 @@ const AppBarWithDrawer = (props: Props) => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar sx={{ backgroundColor: '#192B7D' }} component="nav">
+            <AppBar sx={{ backgroundColor: navbarColor.bg, color: navbarColor.color, transition: '0.3s' }} component="nav">
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -112,7 +141,7 @@ const AppBarWithDrawer = (props: Props) => {
                             </NavLink>
                         ))}
                     </Box>
-                    
+
                     <Link to={'/profile'}>
                         <Box>
                             <Avatar about='sina' src={userList[0].Avatarimage} />
@@ -120,8 +149,8 @@ const AppBarWithDrawer = (props: Props) => {
                     </Link>
                 </Toolbar>
                 <Offline>
-                    <div className='bg-gray-700 flex font-mono justify-center'>
-                            you are offline
+                    <div style={{ color: 'white' }} className='bg-gray-700 flex font-mono justify-center'>
+                        you are offline
                     </div>
                 </Offline>
             </AppBar>

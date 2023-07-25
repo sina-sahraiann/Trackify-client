@@ -28,7 +28,7 @@ const StateSlider = ({ title, children, formRegister, defaultValue }: Props) => 
 
     return (
         <Stack>
-            <Typography variant='subtitle2'>{children}{title}</Typography>
+            <Typography variant='subtitle2'>{children} <span className='relative top-0.5'>{title}</span> </Typography>
             <Slider
                 {...formRegister(title)}
                 size='small'

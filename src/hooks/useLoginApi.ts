@@ -24,12 +24,11 @@ const useLoginApi = ():[
       .then((response) => {
         if (response.status === 200) {
           setError(null);
-          setSuccess(true);
-          console.log(response.data);
-          
+          setSuccess(true);          
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("refreshTokenIsValid", 'true');
+          setLoading(false)
           setTimeout(() => {
             navigate("/");
           }, 1000);

@@ -21,7 +21,7 @@ const useSignupApi = (): [
     setTimeout(() => {
       axios
         .post("http://62.106.95.121/api/account/register", userData)
-        .then((response) => {
+        .then((response) => {          
           if (response.status === 200) {
             setSuccess(true);
             localStorage.setItem("token", response.data.token);
@@ -32,8 +32,7 @@ const useSignupApi = (): [
             }, 1000);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((error : any) => {          
           setError("An error occurred during sign up");
         });
 

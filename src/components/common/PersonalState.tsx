@@ -36,40 +36,7 @@ const PersonalState = ({ health, happiness, satisfaction }: {
   }
 
   return (
-    <Stack className='w-full text-center mt-4' direction={'row'} spacing={'12'} justifyContent={'space-around'}>
-
-      {/* <div className={isUndefined(satisfaction)}>
-        <Stack direction={'column'} alignItems={'center'}>
-          <Avatar sx={{ bgcolor: blue[900], marginBottom: '5px' }}>
-            < ThumbUpOffAltRoundedIcon />
-          </Avatar>
-          <Typography sx={{fontWeight:900}} >
-            {satisfaction + '%'}
-          </Typography>
-        </Stack>
-      </div>
-
-      <div className={isUndefined(happiness)}>
-        <Stack direction={'column'} alignItems={'center'}>
-          <Avatar sx={{ bgcolor: orange[700] }}>
-            < InsertEmoticonRoundedIcon />
-          </Avatar>
-          <Typography sx={{fontWeight:900}}>
-            {happiness + '%'}
-          </Typography>
-        </Stack>
-      </div>
-
-      <div className={isUndefined(health)}>
-        <Stack className={'hidden'} direction={'column'} alignItems={'center'}>
-          <Avatar sx={{ bgcolor: green[700] }}>
-            < HealthAndSafetyIcon />
-          </Avatar>
-          <Typography sx={{fontWeight:900}}>
-            {health + '%'}
-          </Typography>
-        </Stack>
-      </div> */}
+    <Stack className='w-full text-center mt-4 flex-wrap gap-y-5 gap-x-4' direction={'row'} spacing={'14'} justifyContent={'space-around'}>
 
       <div className={classes.card}>
         <div className={classes.percent} style={happinessCirclurProgress}>

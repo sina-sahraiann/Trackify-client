@@ -19,10 +19,9 @@ const useUpdateNote = (): [
       if (response.status === 200) {
         setSuccess(true);
         setError(null);
-        console.log(response.status);
       }
     } catch (error: any) {
-      setError("An error occurred during sign up");
+      setError("An error occurred during updating note");
       console.log(error);
     }
     setIsLoading(false);

@@ -1,11 +1,14 @@
 import { Paper, Accordion, AccordionSummary, AccordionDetails, Typography, AccordionActions, Button } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import noteModel from '../../models/note';
 import PersonalState from '../../components/common/PersonalState';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { ModalContext, ModalContextType } from '../../providers/globalModalProvider';
+import VIewSingleNote from '../ViewSingleNote/VIewSingleNote';
+import UpdateNoteForm from '../updateNote/UpdateNoteForm';
 
 
 
@@ -13,6 +16,7 @@ const EachNote = ({ id, title, text, date, happiness, health, satisfaction
 }: noteModel) => {
 
   const [isVisible, setIsVisible] = useState(false)
+  const { addModal, removeModal } = useContext(ModalContext) as ModalContextType
 
   const onMouseEnterHandler = () => {
       setIsVisible(true)
@@ -21,6 +25,18 @@ const EachNote = ({ id, title, text, date, happiness, health, satisfaction
   const onMouseLeaveHandler = () => {
       setIsVisible(false)
   }
+
+  const openViewModalHandler = () => {
+    if (id) {
+        addModal(<VIewSingleNote noteId={id} />, id)
+    }
+}
+
+const openEditHandler = () => {
+    if (id) {
+        addModal(<UpdateNoteForm noteId={id} />, id)
+    }
+}
 
 
   return (
@@ -33,8 +49,8 @@ const EachNote = ({ id, title, text, date, happiness, health, satisfaction
                 <div className='text-2xl font-bold'>
                   {title}
                 </div>
-                <Link className={`self-end ms-1 transition-all opacity-70 ${isVisible ? ' ' : 'hidden '}`} to={`updateNotes/${id}`}><EditIcon fontSize='small' /></Link>
-                <Link to={`${id}`}  className={`self-end ms-1 transition-all opacity-70 ${isVisible ? ' ' : 'hidden '}`}><RemoveRedEyeIcon/></Link>
+                <button onClick={openEditHandler} className={`self-end ms-1 z-40 transition-all opacity-70 ${isVisible ? ' ' : 'hidden '}`}><EditIcon fontSize='small' /></button>
+                <button onClick={openViewModalHandler}  className={`self-end ms-1 z-40 transition-all opacity-70 ${isVisible ? ' ' : 'hidden '}`}><RemoveRedEyeIcon/></button>
               </div>
             </div>
           </AccordionSummary>

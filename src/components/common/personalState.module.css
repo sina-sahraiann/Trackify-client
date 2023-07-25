@@ -1,6 +1,5 @@
 .card {
   position: relative;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,6 +76,7 @@
   color: var(--clr);
   font-weight: 700;
   font-size: 1.5rem;
+  transform: translateY(5px);
 }
 
 .number h2 span {
@@ -87,11 +87,10 @@
 
 .number p {
   font-weight: 500;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
+  font-size: 1rem;
   position: absolute;
   text-transform: 10px;
   color: var(--clr);
-  bottom: -20px;
+  bottom: -25px;
   transform: translateX(-50% , -50%);
 }

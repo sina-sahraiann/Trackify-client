@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,10 +13,14 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PersonalState from '../../components/common/PersonalState';
 import { Link } from 'react-router-dom';
 import classes from './card.module.css'
+import { ModalContext, ModalContextType } from '../../providers/globalModalProvider';
+import VIewSingleNote from '../ViewSingleNote/VIewSingleNote';
+import UpdateNoteForm from '../updateNote/UpdateNoteForm';
 
 const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }: noteModel) => {
 
     const [isVisible, setIsVisible] = useState(false)
+    const { addModal, removeModal } = useContext(ModalContext) as ModalContextType
 
     const onMouseEnterHandler = () => {
         setIsVisible(true)
@@ -26,19 +30,29 @@ const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }
         setIsVisible(false)
     }
 
-    // sx={{ backgroundColor: '#FFB93E', position: 'relative' }}
+    const openViewModalHandler = () => {
+        if (id) {
+            addModal(<VIewSingleNote noteId={id} />, id)
+        }
+    }
+
+    const openEditHandler = () => {
+        if (id) {
+            addModal(<UpdateNoteForm noteId={id} />, id)
+        }
+    }
 
     return (
 
         <>
             <div className={classes.article} onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler} >
-                <CardContent sx={{padding : '0'}} className='text-left' >
+                <CardContent sx={{ padding: '0' }} className='text-left' >
                     <div className='flex justify-between mb-5'>
                         <div className='flex align-center'>
                             <div className='text-2xl font-bold'>
                                 {title}
                             </div>
-                            <Link className={`self-end ms-1 transition-all opacity-75 hover:opacity-100 hover:font-extrabold ${isVisible ? ' ' : 'hidden '}`} to={`updateNotes/${id}`}><EditIcon fontSize='small' /></Link>
+                            <button onClick={openEditHandler} className={`self-end ms-1 transition-all opacity-75 hover:opacity-100 hover:font-extrabold ${isVisible ? ' ' : 'hidden '}`} ><EditIcon fontSize='small' /></button>
                         </div>
                     </div>
                     <div>
@@ -59,7 +73,7 @@ const EachNoteCard = ({ id, title, text, date, happiness, health, satisfaction }
                     </div>
                 </CardContent>
                 <div className='flex justify-end m-3 translate-x-5 translate-y-3 mt-5 mb-0 opacity-75 hover:opacity-100 h-6'>
-                    <Link to={`${id}`}  className={`text-xs p-2 self-center text-white bg-black rounded-lg ${isVisible ? ' ' : 'hidden '}`}>view full</Link>
+                    <button onClick={openViewModalHandler} className={`text-xs p-2 self-center text-white bg-black rounded-lg ${isVisible ? ' ' : 'hidden '}`}>view full</button>
                 </div>
             </div>
 

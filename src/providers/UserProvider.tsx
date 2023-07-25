@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import useGetUser from '../hooks/useGetUser'
 import getUserProfileApiModel from '../models/apiModel/getUserProfileApiModel';
 import axiosInstance from '../api/apiInstance';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 interface UserContextProps {
     user: getUserProfileApiModel | null;
@@ -22,27 +22,31 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<null | string>(null);
     const [success, setSuccess] = useState<boolean>(false);
-
+      const locate = useLocation()
 
     const [user, setUser] = useState<getUserProfileApiModel | null>(null);
 
     useEffect(() => {
-        axiosInstance
-            .get(`/api/userprofile/getuserprofile`)
-            .then((response) => {
-                setIsLoading(true);
-                if (response.status === 200) {
-                    setIsLoading(false);
-                    setError(null);
-                    setSuccess(true);
-                    setIsLoading(false);
-                    setUser(response.data);                    
-                }
-            })
-            .catch((err) => {
-                setError("couldnt get note");
-                console.log(err);
-            });
+            if (locate.pathname !== '/login' , locate.pathname !== '/signup') {
+                (async () => {
+                    axiosInstance
+                    .get(`/api/userprofile/getuserprofile`)
+                    .then((response) => {
+                        setIsLoading(true);
+                        if (response.status === 200) {
+                            setIsLoading(false);
+                            setError(null);
+                            setSuccess(true);
+                            setIsLoading(false);
+                            setUser(response.data);                    
+                        }
+                    })
+                    .catch((err) => {
+                        setError("couldnt get note");
+                        console.log(err);
+                    });
+                })()
+            }
     }, [])
 
 

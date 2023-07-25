@@ -13,6 +13,11 @@ import loginApiModel from '../../models/apiModel/loginApiModel';
 
 const LoginPage = () => {
 
+  useEffect(() => {
+    localStorage.setItem("token", '')
+    localStorage.setItem("refreshToken", '')
+    } , [])
+
   type formValues = {
     password: string
     email: string
@@ -41,18 +46,13 @@ const LoginPage = () => {
     <>
       <FormLayout>
         
-        <div className='bg-slate-300
-       w-72 md:w-96 mx-auto p-5 rounded-lg bg-opacity-50'>
+        <div className='bg-white
+       w-72 md:w-96 mx-auto p-5 rounded-lg'>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {error && <span className='text-left text-red-800 text-xs mb-2 ml-2'>{error}</span>}
             <div className="flex flex-col">
-              <TextField id='password' key={'password'} type={'password'} label="password" variant="outlined" className='mt-1 bg-slate-200 border-0'
-                {...register("password", {
-                  required: "password shouldn't be empty",
-                })}
-              />
-              <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.password?.message}</span>
-              <TextField id='Email' key={`email`} type={'Email'} label="Email" variant="outlined" className='mt-1 bg-slate-200 border-0'
+              
+              <TextField id='Email' key={`email`} type={'Email'} sx={{marginBottom : '0.5rem'}} label="Email" variant="outlined" className='mb-3 border-0'
                 {...register("email", {
                   required: "Email shouldn't be empty",
                   pattern: {
@@ -62,14 +62,18 @@ const LoginPage = () => {
                 })}
               />
               <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.email?.message}</span>
+              <TextField id='password' key={'password'} type={'password'} sx={{marginBottom : '0.5rem'}} label="password" variant="outlined" className='mt-3 border-0'
+                {...register("password", {
+                  required: "password shouldn't be empty",
+                })}
+              />
+              <span className='text-left text-red-500 text-xs mb-2 ml-2'>{errors.password?.message}</span>
               <div className='flex justify-center'>
                 {loading && <CircularProgress color="secondary" />}
               </div>
               <FormGroup>
                 <FormControlLabel
-                  {...register("check", {
-                    required: "must check"
-                  })}
+                  {...register("check")}
                   control={<Checkbox defaultChecked />} label="Remember me" />
               </FormGroup>
               <Button disabled={!formState.isValid} type='submit' variant='contained' color='primary'>Log in</Button>
