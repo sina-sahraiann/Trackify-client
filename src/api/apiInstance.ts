@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
       error.config._retry = true;
       // Token is expired or invalid
       try {
-        const newToken = await getNewToken();
+        const newToken = await memoizedRefreshToken();
 
         if (newToken) {
           // Retry the failed request with the new token

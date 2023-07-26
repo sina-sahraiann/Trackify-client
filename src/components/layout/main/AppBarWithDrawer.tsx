@@ -97,9 +97,9 @@ const AppBarWithDrawer = (props: Props) => {
                 Trackify
             </Typography>
 
-            <List>
+            <List className='flex-col flex'>
                 {navItems.map((item) => (
-                    <NavLink key={item.name} to={item.path} >
+                    <NavLink key={item.name} to={item.path} className='py-3 hover:bg-slate-300 transition-all font-semibold'>
                         {item.name}
                     </NavLink>
                 ))}

@@ -36,7 +36,7 @@ const UpdateNoteForm = ({ noteId }: { noteId: string }) => {
     const { errors } = formState
 
     const [updateNote, unSuccess, unError, unIsLoading] = useUpdateNote()
-    
+
 
     const onsubmit = (data: formValues) => {
         console.log('sina');
@@ -55,38 +55,44 @@ const UpdateNoteForm = ({ noteId }: { noteId: string }) => {
     }
 
     return (
+
+
         <>
             <Box className='text-left max-w-screen-lg m-auto p-2'>
-                <form onSubmit={handleSubmit(onsubmit)}>
+                {
+                    gnIsLoading ? <div className='h-96 flex justify-center items-center'><CircularProgress  /></div> :
+                        data === null ? <div className='h-96 flex justify-center items-center'><h1 className='text-2xl font-bold'>Not found</h1></div> :
+                            <form onSubmit={handleSubmit(onsubmit)}>
 
-                    <div className="flex flex-col ">
-                        <label htmlFor="first_name" className="block mb-2 text-lg  font-mediumdark:text-white">title</label>
-                        <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" defaultValue={data?.title}
-                            {...register("title", {
-                                required: "Description shouldn't be empty",
-                            })} />
-                    </div>
-                    <div className="flex flex-col mt-5">
-                        <label htmlFor="first_name" className="block mb-2 text-lg  font-mediumdark:text-white">title</label>
-                        <textarea id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" defaultValue={data?.text}
-                            {...register("text", {
-                                required: "Description shouldn't be empty",
-                            })} />
-                    </div>
-                    <div className='my-7'>
-                        <StateSlider title='happiness' formRegister={register} defaultValue={data?.happiness}>
-                            <InsertEmoticonRoundedIcon />
-                        </StateSlider>
-                        <StateSlider title='health' formRegister={register} defaultValue={data?.health}>
-                            <HealthAndSafetyIcon />
-                        </StateSlider>
-                        <StateSlider title='satisfaction' formRegister={register} defaultValue={data?.satisfaction}>
-                            <ThumbUpOffAltRoundedIcon />
-                        </StateSlider>
-                    </div>
-                    {unIsLoading && <CircularProgress color="secondary" />}
-                    <Button type="submit" className="w-full mt-8" variant="contained">Update</Button>
-                </form>
+                                <div className="flex flex-col ">
+                                    <label htmlFor="first_name" className="block mb-2 text-lg  font-mediumdark:text-white">title</label>
+                                    <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" defaultValue={data?.title}
+                                        {...register("title", {
+                                            required: "Description shouldn't be empty",
+                                        })} />
+                                </div>
+                                <div className="flex flex-col mt-5">
+                                    <label htmlFor="first_name" className="block mb-2 text-lg  font-mediumdark:text-white">title</label>
+                                    <textarea id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" defaultValue={data?.text}
+                                        {...register("text", {
+                                            required: "Description shouldn't be empty",
+                                        })} />
+                                </div>
+                                <div className='my-7'>
+                                    <StateSlider title='happiness' formRegister={register} defaultValue={data?.happiness}>
+                                        <InsertEmoticonRoundedIcon />
+                                    </StateSlider>
+                                    <StateSlider title='health' formRegister={register} defaultValue={data?.health}>
+                                        <HealthAndSafetyIcon />
+                                    </StateSlider>
+                                    <StateSlider title='satisfaction' formRegister={register} defaultValue={data?.satisfaction}>
+                                        <ThumbUpOffAltRoundedIcon />
+                                    </StateSlider>
+                                </div>
+                                {unIsLoading && <CircularProgress color="secondary" />}
+                                <Button type="submit" className="w-full mt-8" variant="contained">Update</Button>
+                            </form>
+                }
             </Box>
 
         </>

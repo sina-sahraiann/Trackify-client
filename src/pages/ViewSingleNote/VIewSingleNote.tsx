@@ -11,6 +11,7 @@ import useDeleteNote from '../../hooks/useDeleteNoteApi'
 import { ModalContext, ModalContextType } from '../../providers/globalModalProvider'
 import UpdateNoteForm from '../updateNote/UpdateNoteForm'
 import { useSnackbar } from 'notistack'
+import {CircularProgress} from '@mui/material'
 
 const VIewSingleNote = ({noteId} : {noteId : string}) => {
 
@@ -29,9 +30,15 @@ const VIewSingleNote = ({noteId} : {noteId : string}) => {
             addModal(<UpdateNoteForm noteId={noteId} />, noteId)
     }
 
+    
+
     return (
             <Box className='text-left m-auto bg-yellow-200 p-5'>
-                <h1 className='text-3xl'>{data?.title}</h1>
+               {
+                gnIsLoading ? <div className='h-96 flex justify-center items-center'><CircularProgress/></div> :
+                data === null ? <div className='h-96 flex justify-center items-center'><h1 className='text-2xl font-bold'>Not found</h1></div> :
+                <>
+                 <h1 className='text-3xl'>{data?.title}</h1>
                 <p className='text-xl mt-8 break-words'>{data?.text}</p>
                 <div className='flex justify-center mt-7'>
                     <PersonalState
@@ -44,6 +51,8 @@ const VIewSingleNote = ({noteId} : {noteId : string}) => {
                     <Button onClick={openEditHandler} style={{ marginRight: '30px' }} color='primary' variant='contained'>Edit</Button>
                     <Button onClick={onDeleteHandler} color='error' variant='contained'>Delete</Button>
                 </div>
+                </>
+               }
             </Box>
     )
 }
