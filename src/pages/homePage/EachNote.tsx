@@ -10,10 +10,12 @@ import { ModalContext, ModalContextType } from '../../providers/globalModalProvi
 import VIewSingleNote from '../ViewSingleNote/VIewSingleNote';
 import UpdateNoteForm from '../updateNote/UpdateNoteForm';
 
+interface eachNoteModel extends noteModel {
+  forcedRerender: () => void
+}  
 
-
-const EachNote = ({ id, title, text, date, happiness, health, satisfaction
-}: noteModel) => {
+const EachNote = ({ id, title, text, date, happiness, health, satisfaction,forcedRerender
+}: eachNoteModel) => {
 
   const [isVisible, setIsVisible] = useState(false)
   const { addModal, removeModal } = useContext(ModalContext) as ModalContextType
@@ -28,15 +30,17 @@ const EachNote = ({ id, title, text, date, happiness, health, satisfaction
 
   const openViewModalHandler = () => {
     if (id) {
-        addModal(<VIewSingleNote noteId={id} />, id)
+        addModal(<VIewSingleNote forcedRerender={forcedRerender} noteId={id} />, id)
     }
 }
 
 const openEditHandler = () => {
     if (id) {
-        addModal(<UpdateNoteForm noteId={id} />, id)
+        addModal(<UpdateNoteForm forcedRerender={forcedRerender} noteId={id} />, id)
     }
 }
+
+
 
 
   return (

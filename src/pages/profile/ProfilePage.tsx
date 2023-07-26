@@ -41,7 +41,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
                 <div id='right-col'>
-                  <div className='max-w-md mt-5 md:mt-0'>
+                  <div className='max-w-md mx-auto mt-5 md:mt-0'>
                     {user && <StreakCard journalingStreak={user.journalingStreak} />}
                   </div>
                   {/* <form className='text-left pt-6'>

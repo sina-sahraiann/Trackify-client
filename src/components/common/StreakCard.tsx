@@ -27,7 +27,7 @@ const StreakCard = ({ journalingStreak }: { journalingStreak: number }) => {
         <>
 
             <div
-                className="relative overflow-hidden rounded-2xl border bg-white p-5 py-5 pt-5"
+                className="relative overflow-hidden rounded-2xl border bg-white p-5 py-5 pt-5 shadow-slate-300 shadow-xl"
                 id="widget"
             >
                 <div className="mb-8 flex items-center justify-between">

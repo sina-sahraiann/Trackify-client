@@ -4,7 +4,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import EachNoteCard from './EachNoteCard';
 import noteModel from '../../models/note';
 
-const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
+const CardNoteHolder = ({ noteList ,forcedRerender}: { noteList: noteModel[] ,forcedRerender: () => void}) => {
     return (
         <>
             <div className='md:hidden'>
@@ -12,7 +12,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} key={`eachnotecard${index}`}/>
+                                <EachNoteCard forcedRerender={forcedRerender}  {...note} key={`eachnotecard${index}`}/>
                             )
                         )
                     }
@@ -23,7 +23,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
+                                <EachNoteCard forcedRerender={forcedRerender} {...note} key={`eachnotecardmdblock${index}`}/>
                             )
                         )
                     }
@@ -34,7 +34,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
+                                <EachNoteCard forcedRerender={forcedRerender} {...note} key={`eachnotecardmdblock${index}`}/>
                             )
                         )
                     }
@@ -45,7 +45,7 @@ const CardNoteHolder = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNoteCard {...note} key={`eachnotecardmdblock${index}`}/>
+                                <EachNoteCard forcedRerender={forcedRerender} {...note} key={`eachnotecardmdblock${index}`}/>
                             )
                         )
                     }

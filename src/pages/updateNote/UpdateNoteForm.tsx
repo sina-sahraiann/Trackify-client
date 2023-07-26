@@ -16,7 +16,7 @@ import { snackbarContextType } from "../../providers/globalSnackBarProvider"
 
 let firstTime = true
 
-const UpdateNoteForm = ({ noteId }: { noteId: string }) => {
+const UpdateNoteForm = ({ noteId ,forcedRerender}: { noteId: string,forcedRerender: () => void }) => {
 
     const [data, gnIsLoading, gnError, gnSuccess] = useGetNote(noteId)
     const { removeModal } = useContext(ModalContext) as ModalContextType
@@ -52,6 +52,7 @@ const UpdateNoteForm = ({ noteId }: { noteId: string }) => {
 
         updateNote(dataToSend)
         removeModal(noteId)
+        forcedRerender()
     }
 
     return (

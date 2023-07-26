@@ -10,7 +10,7 @@ import register from '../../api/loginApi';
 
 
 
-const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
+const AllNotes = ({ noteList ,forcedRerender }: { noteList: noteModel[] ,forcedRerender: () => void}) => {
 
   console.log(noteList);
 
@@ -21,7 +21,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote key={`Eachnote${index}`} {...note} />
+                <EachNote forcedRerender={forcedRerender} key={`Eachnote${index}`} {...note} />
               )
             )
           }
@@ -32,7 +32,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
           {
             noteList.map(
               (note, index) => (
-                <EachNote key={`Eachnotemdblock${index}`} {...note} />
+                <EachNote forcedRerender={forcedRerender} key={`Eachnotemdblock${index}`} {...note} />
               )
             )
           }
@@ -43,7 +43,7 @@ const AllNotes = ({ noteList }: { noteList: noteModel[] }) => {
                     {
                         noteList.map(
                             (note, index) => (
-                                <EachNote {...note} key={`eachnotecardmdblock${index}`}/>
+                                <EachNote forcedRerender={forcedRerender} {...note} key={`eachnotecardmdblock${index}`}/>
                             )
                         )
                     }

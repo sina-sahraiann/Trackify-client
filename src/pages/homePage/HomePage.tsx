@@ -30,7 +30,7 @@ import { useSnackbar } from '../../providers/globalSnackBarProvider'
 
 const style = {
   position: 'absolute' as 'absolute',
-  top: '60%',
+  top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
@@ -53,6 +53,14 @@ const HomePage = () => {
   const [notesFound, foundFilteredNotes, searchInput, handleSearchInputChange, resetSearchInput] = useNoteSearch(notesData, filteredNotes)
   const [cnLoading, setLoading] = useState<boolean>(false);
   const { addSnackbar } = useSnackbar();
+  const [rerender, setRerender] = useState<boolean>(true)
+
+  const forcedRerender = async  () => {
+     gaSetRetry(state => !state)
+    //  setTimeout(() => {
+    //   setRerender(state => !state)
+    //  },2000)
+  }
 
   interface formValues {
     title: string
@@ -85,7 +93,7 @@ const HomePage = () => {
       // createNote(dataToSend)
       const response = await NoteApi.create(dataToSend)
       console.log(response?.data);
-      
+
       setLoading(false);
 
       gaSetRetry(prevState => !prevState)
@@ -121,28 +129,28 @@ const HomePage = () => {
       if (searchInput === '') {
         return filteredNotes ?
           isCard ?
-            <AllNotes noteList={filteredNotes} /> :
-            <CardNoteHolder noteList={filteredNotes} /> :
+            <AllNotes forcedRerender={forcedRerender} noteList={filteredNotes} /> :
+            <CardNoteHolder forcedRerender={forcedRerender} noteList={filteredNotes} /> :
           <LoadingSkeleton />
       } else {
         return foundFilteredNotes ?
           isCard ?
-            <AllNotes noteList={foundFilteredNotes} /> :
-            <CardNoteHolder noteList={foundFilteredNotes} /> :
+            <AllNotes forcedRerender={forcedRerender} noteList={foundFilteredNotes} /> :
+            <CardNoteHolder forcedRerender={forcedRerender} noteList={foundFilteredNotes} /> :
           <LoadingSkeleton />
       }
     } else {
       if (searchInput === '') {
         return notesData ?
           isCard ?
-            <AllNotes noteList={notesData} /> :
-            <CardNoteHolder noteList={notesData} /> :
+            <AllNotes forcedRerender={forcedRerender} noteList={notesData} /> :
+            <CardNoteHolder forcedRerender={forcedRerender} noteList={notesData} /> :
           <LoadingSkeleton />
       } else {
         return notesFound ?
           isCard ?
-            <AllNotes noteList={notesFound} /> :
-            <CardNoteHolder noteList={notesFound} /> :
+            <AllNotes forcedRerender={forcedRerender} noteList={notesFound} /> :
+            <CardNoteHolder forcedRerender={forcedRerender} noteList={notesFound} /> :
           <LoadingSkeleton />
       }
     }
@@ -173,21 +181,21 @@ const HomePage = () => {
     setNoteJsx(renderNotes())
     console.log(renderNotes().props.noteList);
 
-  }, [notesData, isCard, notesFound, isFiltered, filteredNotes, foundFilteredNotes])
+  }, [notesData, isCard, notesFound, isFiltered, filteredNotes, foundFilteredNotes, rerender])
 
   return (
     <>
       <MainLayout>
         <div>
           <div className='flex flex-col md:flex-row md:justify-between py-5'>
-            <Header_section title='All notes' related='/all' />
+            <Header_section title='Notes' related={!isFiltered ? '/all' : '/filtered'} />
             {user && <StreakCard journalingStreak={user.journalingStreak} />}
           </div>
           <div className='flex-col-reverse flex sm:flex-row md:justify-between mb-10'>
             <div className='flex flex-wrap gap-y-4 gap-x-3'>
               <Button onClick={handleOpen} size='small' variant='contained' sx={{
                 backgroundColor: '#FFB200',
-                
+
                 '&:hover': {
                   backgroundColor: 'white',
                   color: 'black',
