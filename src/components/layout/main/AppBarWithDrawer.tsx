@@ -94,7 +94,7 @@ const AppBarWithDrawer = (props: Props) => {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                Trackify
+                Journaling
             </Typography>
 
             <List className='flex-col flex'>
@@ -130,7 +130,7 @@ const AppBarWithDrawer = (props: Props) => {
                         className={'text-start'}
                     >
                         <NavLink to={'/'}>
-                            Trackify
+                            Journaling
                         </NavLink>
 
                     </Typography>
